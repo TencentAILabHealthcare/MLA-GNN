@@ -75,6 +75,11 @@ The data structure is:
     ** Each element E_i, j represents the correlation between the i-th and j-th genes.
     
 
+## Output files
+
+After training the MLA-GNN model, the model will be save at: "./save_models/split k_xxx_epochs.pt'"
+risk_pred_all, survtime_all, censor_all, probs_all, gt_all
+
 ## Usage
 
 ### Evaluation
