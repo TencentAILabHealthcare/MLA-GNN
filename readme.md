@@ -83,19 +83,53 @@ The data structure is:
 
 + After training, the model will also output the **feature importance** computed by the FGS mechanism, showing the contribution of each gene to the prediction task.
 
-+ The model prediction is saved in the .pkl format, including the following information: risk_pred_all, survtime_all, censor_all, probs_all, gt_all.
++ The **model prediction** is saved in the .pkl format, including the following information: risk_pred_all, survtime_all, censor_all, probs_all, gt_all.
 
 
 ## Usage
 
-### Evaluation
+### Step1: gene co-expression network computation.
 ```shell script
-python3 test_cv.py
+run WGCNA_gbmlgg.R
+```
+** The adjacency matrix computed by the WGCNA algorithm should be saved in the folder "./example_data".
 
+
+### Step2: Model training.
+```shell script
+### survival prediction with three levels of features.
+python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 720 --num_epochs 50 
+
+### survival prediction with the layer1 only.
+python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 240 --which_layer layer1 --num_epochs 50 
+
+### survival prediction with the layer2 only.
+python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 240 --which_layer layer2 --num_epochs 50 
+
+### survival prediction with the layer3 only.
+python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 240 --which_layer layer3 --num_epochs 50 
+
+### Glioma grading with three levels of features.
+python3 train_cv.py --task grad --lin_input_dim 720
+
+### Glioma grading with the layer1 only (similar to the survival prediction task, you can parse different values to the "which_layer" to train the model with features from other layers).
+python3 train_cv.py --task grad --lin_input_dim 240 --which_layer layer1
+```
+
+### Step3: Model evaluation.
+```shell script
+### Similar to the model training, the users should parse different arguments to change the experiment settings and evaluate different models.
+python3 test_cv.py
+```
+
+### Step4: Model interpretation.
+```shell script
+### After training the model, you can compute the feature importance with the FGS mechanism with the following script.
+python3 gradients_to_feature_importance.py
 ```
 
 ### Scripts
-```shell script
+```bash
 test_cv.py: Load the well-trained model from the folder “/pretrained_models/…” and test the performance on the testing set of the 15 splits.
 
 test_model.py: the definitions for "test".
