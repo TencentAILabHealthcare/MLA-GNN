@@ -10,19 +10,43 @@ submitted to **Bioinformatics 2021**.
 
 ## Installation
 ### Dependencies
-* Python 3.6
-* PyTorch >= 1.5.0
-* torch_geometric
-* numpy
-* pandas
-* scipy
-* sklearn
-* opencv
-* random
+```
+Python 3.6
+PyTorch >= 1.5.0
+torch_geometric
+numpy
+pandas
+scipy
+sklearn
+opencv
+random
+```
+
+## Data Description
+For the glioma dataset, 15-fold cross validation is conducted to evaluate the model performance. For each train-test split, we compute the adjacency matrix by performing the WGCNA algorithm on the training set. The input features and adjacency matrix are saved at: ./example_data/...
+
+The data structure is:
+  ```bash
+  ./example_data
+  
+      ├── input_features_labels                
+          ├── split1_train_320_features_labels.csv
+          ├── split1_test_320_features_labels.csv
+          ├── ...
+          ├── ...
+          ├── split15_train_320_features_labels.csv
+          ├── split15_test_320_features_labels.csv
+          
+      ├── input_adjacency_matrix
+          ├── split1_adjacency_matrix.csv
+          ├── split2_adjacency_matrix.csv
+          ├── ...
+          ├── ...
+          ├── split15_adjacency_matrix.csv
+  ```
 
 
 ## Usage
-
 
 ### Evaluation
 ```shell script
