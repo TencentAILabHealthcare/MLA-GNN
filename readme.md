@@ -45,27 +45,35 @@ The data structure is:
           ├── split15_adjacency_matrix.csv
   ```
 
-+ For each train or test set, the RNAseq features and labels (for survival prediction and histological grading) are contained in the "xxx_xxx_320d_features_labels.csv" in the following format.
-Each row represents the gene expression of one patient, while each column denotes the expression of one gene (Entrez ID):
-	0	1	2	3
-0	TCGA-06-0141	-0.751162972	-1.72656962	0.876216622
-1	TCGA-06-0141	-0.751162972	-1.72656962	0.876216622
-2	TCGA-06-0187	-0.751162972	-1.72656962	2.305385481
-3	TCGA-06-0645	-0.751162972	-1.72656962	2.305385481
-4	TCGA-06-0645	-0.751162972	-1.72656962	2.305385481
-158	TCGA-WY-A85C	-0.751162972	0.579183132	-0.552952237
-![image](https://user-images.githubusercontent.com/27730257/143766746-0dd95047-93c6-4ccf-b1db-8f6384ad0d79.png)
++ For each train or test set, the RNAseq features and labels (for survival prediction and histological grading) are contained in the "xxx_xxx_320d_features_labels.csv" in the following format:
 
-    0| 1 | 2 | 3 | ... | 321 | 322 | 323 
-    --- | --- | --- | --- | --- | --- | --- 
+    0 | 1 | 2 | 3 | ... | 321 | 322 | 323 
+    --- | --- | --- | --- | --- | --- | --- | --- 
     TCGA-06-0141 |-0.751162972 | -1.72656962 | 0.876216622 | ... | 1 | 313 | 2
     TCGA-06-0187 |-0.751162972 | -1.72656962 | 2.305385481 | ... | 1 | 828 | 2
     ... | ... |	... | ... |	... | ... |	... 
     TCGA-S9-A7R3 | -0.751162972 |	0.57918313 | -0.55295223 | ... | 0 | 3013 | 0
     
-    ** If you want to evaluate our model with your own data, please prepare the data in this form and make sure the 
-    genes are represented in the Entrez ID.
+    ** Each row represents the features and labels of one patient. 
+    
+    ** Since we used the preprocessed data from the [Pathomic fusion paper](https://ieeexplore.ieee.org/abstract/document/9186053), the features are 320d, containing 80d CNV features (1-80 columns) and 240d RNAseq features (81-320 columns). In our work, we only used the RNAseq data, so we extracted the 81-320 columns from this file as input features. 
+    
+    ** The last three columns represent the labels. The 321-th column indicates whether a patient is censored, the 322-th column denotes the survival time, while the last column shows the ground-truth class for the histological grading task (0, 1, 2 denotes grade II, III, IV, respectively).
+    
++ For each train-test split, the adjacency matrix is computed based on the training set and saved in the following format:
 
+    V83 | V84 | V85 | ... | V321 | V322 
+    --- | --- | --- | --- | --- | --- 
+    1 | 0.001676229	| 3.07E-06 | ... | 5.30E-07 |	5.89E-09
+    0.001676229 |	1 |	1.93E-07 | ... | 3.33E-10	| 1.69E-07
+    3.07E-06 | 1.93E-07 |	1 | ... | 1.98E-09 | 0.000125699
+    ... | ... |	... | ... |	... | ... |	... 
+    5.89E-09 | 1.69E-07	| 0.000125699 |	... | 1.04E-06 | 1
+
+    ** The shape of the adjacency matrix is 240*240.
+    
+    ** Each element E_i, j represents the correlation between the i-th and j-th genes.
+    
 
 ## Usage
 
