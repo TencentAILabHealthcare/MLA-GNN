@@ -23,7 +23,7 @@ random
 ```
 
 ## Data Description
-For the glioma dataset, 15-fold cross validation is conducted to evaluate the model performance. For each train-test split, we compute the adjacency matrix by performing the WGCNA algorithm on the training set. The input features and adjacency matrix are saved at: ./example_data/...
+For the glioma dataset, 15-fold cross validation is conducted to evaluate the model performance. For each train-test split, we compute the adjacency matrix by performing the WGCNA algorithm on the training set. The **input features and adjacency matrix** are saved at: ./example_data/...
 
 The data structure is:
   ```bash
@@ -77,8 +77,14 @@ The data structure is:
 
 ## Output files
 
-After training the MLA-GNN model, the model will be save at: "./save_models/split k_xxx_epochs.pt'"
-risk_pred_all, survtime_all, censor_all, probs_all, gt_all
++ After training the MLA-GNN model, the model will be save at: "./pretrained_models/".
+
++ The **pretrained files** are named as '/split' + str(k) + '_' + opt.task + '_' + str(opt.lin_input_dim) + 'd_' + opt.which_layer + '_' +str(opt.num_epochs) +'epochs.pt'. As an example, the model for the grading task trained with all three level features is saved as "split1_grad_720d_all_50epochs.pt".
+
++ After training, the model will also output the **feature importance** computed by the FGS mechanism, showing the contribution of each gene to the prediction task.
+
++ The model prediction is saved in the .pkl format, including the following information: risk_pred_all, survtime_all, censor_all, probs_all, gt_all.
+
 
 ## Usage
 
