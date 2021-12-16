@@ -95,36 +95,15 @@ run WGCNA_gbmlgg.R
 ** The adjacency matrix computed by the WGCNA algorithm should be saved in the folder "./example_data".
 
 
-### Step2: Model training.
+### Step2: Model inference.
 ```shell script
-### survival prediction with three levels of features.
-python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 720 --num_epochs 50 
-
-### survival prediction with the layer1 only.
-python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 240 --which_layer layer1 --num_epochs 50 
-
-### survival prediction with the layer2 only.
-python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 240 --which_layer layer2 --num_epochs 50 
-
-### survival prediction with the layer3 only.
-python3 train_cv.py --task surv --label_dim 1 --act_type Sigmoid --lin_input_dim 240 --which_layer layer3 --num_epochs 50 
-
-### Glioma grading with three levels of features.
-python3 train_cv.py --task grad --lin_input_dim 720
-
-### Glioma grading with the layer1 only (similar to the survival prediction task, you can parse different values to the "which_layer" to train the model with features from other layers).
-python3 train_cv.py --task grad --lin_input_dim 240 --which_layer layer1
-```
-
-### Step3: Model evaluation.
-```shell script
-### Similar to the model training, the users should parse different arguments to change the experiment settings and evaluate different models.
+### The users should parse different arguments to change the experiment settings and evaluate different models.
 python3 test_cv.py
 ```
 
-### Step4: Model interpretation.
+### Step3: Model interpretation.
 ```shell script
-### After training the model, you can compute the feature importance with the FGS mechanism with the following script.
+### You can compute the feature importance with the FGS mechanism with the following script.
 python3 gradients_to_feature_importance.py
 ```
 
@@ -135,6 +114,8 @@ test_cv.py: Load the well-trained model from the folder “/pretrained_models/�
 test_model.py: the definitions for "test".
 
 model_GAT.py: the definitions for the network optimizer and the GAT network, which can be selected as 720d model(GAT_features = layer1+layer2+layer3) or 240d (either use the layer1, or layer2, or layer3 as the GAT features) model.
+
+model_GAT_v4.py: Optimized implementation of the GAT layer, we employed the “GATconv” function encapsulated in the pytorch Geometric package, which is optimized to save computational cost.
 
 utils.py: contains data_loader and other functions (cindex, cox_loss, …).
 
@@ -150,3 +131,11 @@ gradients_to_feature_importance.py: combine the gradients produced by different 
 This tool is for research purpose and not approved for clinical use.
 
 This is not an official Tencent product.
+
+## Copyright
+
+This tool is developed in Tencent AI Lab.
+
+The copyright holder for this project is Tencent AI Lab.
+
+All rights reserved.
